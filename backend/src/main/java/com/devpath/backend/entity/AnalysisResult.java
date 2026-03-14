@@ -1,15 +1,15 @@
 package com.devpath.backend.entity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "analysis_results")
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class AnalysisResult {
 
     @Id
@@ -17,15 +17,13 @@ public class AnalysisResult {
     private Long id;
 
     @Column(columnDefinition = "TEXT")
-    private String summary;
+    private String analysisJson;
 
-    @Column(columnDefinition = "TEXT")
-    private String skillsDetected;
-
-    @Column(columnDefinition = "TEXT")
-    private String improvementSuggestions;
-
+    @JsonBackReference
     @OneToOne
     @JoinColumn(name = "resume_id")
     private Resume resume;
+
+    @Column(columnDefinition = "TEXT")
+    private String careerInsight;
 }

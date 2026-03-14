@@ -2,8 +2,10 @@ package com.devpath.backend.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "resumes")
@@ -30,8 +32,16 @@ public class Resume {
     @JoinColumn(name = "user_id")
     private User user;
 
+
+    @JsonManagedReference
+    @OneToOne(mappedBy = "resume", cascade = CascadeType.ALL)
+    private AnalysisResult analysisResult;
+
     @PrePersist
     protected void onCreate() {
         this.uploadedAt = LocalDateTime.now();
     }
+
+    @OneToMany(mappedBy = "resume", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<ResumeSkill> resumeSkills;
 }
